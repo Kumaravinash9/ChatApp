@@ -112,7 +112,7 @@ TextEditingController chatmessage;
             onPressed: () {},
           ),*/
 
-          DropdownButtonHideUnderline(
+         /* DropdownButtonHideUnderline(
             child: DropdownButton(
          elevation: 8,
          icon:  Icon(Icons.more_vert,color: Colors.green,),
@@ -128,7 +128,7 @@ TextEditingController chatmessage;
                   if(value=="logout")
                   await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context));
                 }),),
-                SizedBox(width:5)
+                SizedBox(width:5)*/
 
          
         ],

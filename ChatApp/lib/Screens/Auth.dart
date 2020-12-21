@@ -3,15 +3,17 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:ChatApp/Screens/UserScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthScreen extends StatefulWidget {
  
- final void Function(String email ,String  password, String username, bool isLogin,BuildContext context,File _image)submit;
-  AuthScreen(this.submit );
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -25,7 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String username;
   bool istrue;
   File _image;
-
+  bool isval;
   
   
   @override
@@ -36,21 +38,71 @@ class _AuthScreenState extends State<AuthScreen> {
    email='';
    username='';
    password='';
-   istrue=false;
+   isval=false;
    _image=null;
   }
   final _formkey=GlobalKey<FormState>();
+
+final auth=FirebaseAuth.instance;
+  Future<void> submit(String email,String password,String username,bool isLogin,BuildContext ctx,File _image) async
+  {
+   UserCredential authresult;
+    try{
+           var dwnurl="";
+
+         
+           if(isLogin==false)
+           {
+             authresult=await auth.createUserWithEmailAndPassword(email: email, password:password);
+             if(_image!=null)
+              {var ref= FirebaseStorage.instance.ref().child("${FirebaseAuth.instance.currentUser.uid}/images").child("profile.jpg");
+              await ref.putFile(_image);
+              dwnurl = await ref.getDownloadURL();
+              }
+
+             FirebaseFirestore.instance.collection("user").doc(authresult.user.uid).set({
+               "username":username,
+               "email":email,
+               "url": dwnurl
+             });
+      
+           }
+           else
+           {
+            authresult=await auth.signInWithEmailAndPassword(email: email, password: password);
+           }
+           if(authresult.user.uid!=null)
+           Navigator.of(ctx).push(MaterialPageRoute(builder: (bctx)=>UserScreen(authresult.user.uid,username))).then((value) async{
+            setState(() {
+              isval=!isval;
+            });
+           });
+    }on PlatformException catch(err){
+     var message='An error occured';
+      if(err.message!=null)
+      message=err.message;
+      print(message);
+    }catch(err){
+     print(err);
+     
+     setState(() {
+       isval!=isval;
+     });
+     Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(err.toString()),backgroundColor: Colors.red,));
+    }
+  }
+
   
   @override
   Widget build(BuildContext context) {
-    void _trysubmit()  {
+    void _trysubmit() async {
     final isvalid=_formkey.currentState.validate();
     if(isvalid){
       
       setState(() {
        _formkey.currentState.save();
-       istrue=!istrue;
-      widget.submit(email.trim(),password.trim(),username.trim(),islogin,context,_image);
+        
+         submit(email.trim(),password.trim(),username.trim(),islogin,context,_image);
       
       });
     }
@@ -169,12 +221,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
 
                         Center(
-                         child: istrue?CircularProgressIndicator()  :RaisedButton(onPressed: (){
-                       _trysubmit();
+                          child:
+                        !isval? RaisedButton(onPressed: (){
+                          setState(() {
+                            isval=!isval;
+                          });
+                        _trysubmit();
                            
                          },child: Text(islogin==true?"Log In":"Sign Up",style: TextStyle(color: Colors.white),),
                          color: Colors.pink[300]
-                         )
+                         ):CircularProgressIndicator()
                          
                         ),
 
@@ -211,4 +267,5 @@ class _AuthScreenState extends State<AuthScreen> {
             
 
   }
+ 
 }

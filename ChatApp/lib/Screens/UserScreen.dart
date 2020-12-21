@@ -44,7 +44,7 @@ class _UserScreenState extends State<UserScreen> {
                 ],
                 onChanged: (value)async {
                   if(value=="logout")
-                  await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context));
+                  await FirebaseAuth.instance.signOut().then((value) => Navigator.pop(context,false));
                 }),),
                 SizedBox(width:5)
 
