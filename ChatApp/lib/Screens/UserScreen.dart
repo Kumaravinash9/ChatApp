@@ -26,9 +26,11 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return
        Scaffold(
-      appBar: AppBar(title: Text("ChatApp"),
+      appBar: AppBar(title: Text("BIPOLAR",style:TextStyle(
+fontWeight: FontWeight.w500,fontFamily: "Roboto"
+      )),
       automaticallyImplyLeading: false,
-      
+      backgroundColor: Colors.pinkAccent,
       actions: [
      DropdownButtonHideUnderline(
             child: DropdownButton(

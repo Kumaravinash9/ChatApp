@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:transparent_image/transparent_image.dart';
 
 
 
@@ -17,7 +17,7 @@ class Bubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final bg = !isMe ? Colors.white : Colors.greenAccent.shade100;
     final align = !isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end;
- 
+    
     final radius = isMe
         ? BorderRadius.only(
             topRight: Radius.circular(5.0),
@@ -33,8 +33,9 @@ class Bubble extends StatelessWidget {
       crossAxisAlignment: align,
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.all(3.0),
-          padding:  fileType=="text"?const EdgeInsets.all(8.0):const EdgeInsets.all(0),
+          margin: const EdgeInsets.all(3),
+          constraints: BoxConstraints(minWidth:.5, maxWidth: MediaQuery.of(context).size.width*.6),
+          padding:  fileType=="text"?const EdgeInsets.all(6.0):const EdgeInsets.all(0),
           decoration: BoxDecoration(
             boxShadow: [
               fileType=="text"?BoxShadow(
@@ -52,14 +53,25 @@ class Bubble extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: fileType=="text"?EdgeInsets.only(right: 48.0):EdgeInsets.only(right:1),
-                child: fileType=="text" ?Text(message,softWrap: true,style: TextStyle(
-                  fontFamily: "Roboto",
-                ),):Container( decoration: BoxDecoration(
-                  image:DecorationImage(image:NetworkImage(message),fit: BoxFit.cover)
-                ),
+                child: fileType=="text" ? Text(message,softWrap: true,style: TextStyle(
+                    fontFamily: "Roboto",
+                  ),)
+                :Container( 
                 width:MediaQuery.of(context).size.width*.6,
                 height:MediaQuery.of(context).size.height*.32,
-                child: SizedBox(),
+                child: Stack(fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: [
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+                Container(
+                  width:MediaQuery.of(context).size.width*.6,
+                   height:MediaQuery.of(context).size.height*.32,
+                  child: FadeInImage.memoryNetwork(placeholder:kTransparentImage , image: message,fit: BoxFit.cover,))
+
+                ],
+                ),
                 )
               ),
               Positioned(

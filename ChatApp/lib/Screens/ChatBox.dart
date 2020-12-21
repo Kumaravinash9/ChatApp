@@ -4,6 +4,7 @@
 
 import 'dart:io';
 import 'package:ChatApp/Screens/showBottom.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -85,17 +86,19 @@ TextEditingController chatmessage;
         title: Row(mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
           children:[
-             widget.url.length==0?CircleAvatar(child: Text(widget.username.substring(0,1)),radius: 20,backgroundColor: Colors.green,):CircleAvatar(child: SizedBox(),backgroundImage:NetworkImage(widget.url),radius: 20,),
-                   SizedBox(width: 5,),
+             /*?widget.url.length>0?CircleAvatar(child:Text(widget.username.substring(0,1),radius: 20,backgroundColor: Colors.green,):CircleAvatar(child: SizedBox(),backgroundImage:NetworkImage(widget.url),radius: 20,),*/
+
+      widget.url.length>0? CircleAvatar(child: SizedBox(),backgroundImage:NetworkImage(widget.url),radius: 20,) :CircleAvatar(child:Text(widget.username.substring(0,1)),radius: 20,backgroundColor: Colors.green,),
+                   SizedBox(width: 10,),
              
-                Text(widget.username.substring(0,1).toUpperCase()+widget.username.substring(1).toLowerCase(),style: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: Colors.black,fontFamily: "Roboto"),)
+                Text(widget.username.substring(0,1).toUpperCase()+widget.username.substring(1).toLowerCase(),style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black,fontFamily: "Roboto"),)
              ]),
              leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.green,), onPressed:(){
                Navigator.of(context).pop();
              }),
        
          actions: <Widget>[
-        /* IconButton(
+         IconButton(
             icon: Icon(
               Icons.videocam,
               color: Colors.green,
@@ -110,7 +113,7 @@ TextEditingController chatmessage;
               color: Colors.green,
             ),
             onPressed: () {},
-          ),*/
+          ),
 
          /* DropdownButtonHideUnderline(
             child: DropdownButton(
@@ -175,7 +178,9 @@ TextEditingController chatmessage;
             return Center(child: CircularProgressIndicator(),);
           },);
         });}
-        return Center(child: Text("Start your Conversation"),);
+        return Center(child: Text("Start your Conversation",style: TextStyle(
+          fontWeight: FontWeight.w500,fontFamily: 'Roboto',fontSize: 18
+        ),),);
       }},),
   ),),
 
@@ -206,7 +211,7 @@ TextEditingController chatmessage;
           child: Row(
             children: [
               IconButton(
-                  icon: Icon(Icons.keyboard_voice , color: Colors.blueAccent,), onPressed: () {
+                  icon: Icon(Icons.keyboard_voice , color: Colors.blueGrey,), onPressed: () {
 
 
 
@@ -228,7 +233,7 @@ TextEditingController chatmessage;
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.photo_camera ,  color: Colors.blueAccent),
+                icon: Icon(Icons.photo_camera ,  color: Colors.red),
                 onPressed: () async {
                var  pickedFile= await ImagePicker().getImage(source: ImageSource.camera);
           if (pickedFile!= null) {
@@ -263,10 +268,11 @@ TextEditingController chatmessage;
 
       SizedBox(width: 15),
       Container(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(8.0),
+        width: 55,
         
         decoration: BoxDecoration(
-            color: Colors.blueAccent, shape: BoxShape.circle,),
+            color: Colors.green, shape: BoxShape.circle,),
         child: InkWell(
           child: Icon(
             Icons.message,

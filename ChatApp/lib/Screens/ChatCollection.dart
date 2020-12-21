@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ChatCollection extends StatelessWidget {
  final String uid;
@@ -36,7 +37,7 @@ class ChatCollection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black.withOpacity(.8),
       body:StreamBuilder(stream: FirebaseFirestore.instance.collection("user").snapshots(),builder: (context,AsyncSnapshot<dynamic>snapshot){
         
        if(snapshot.hasData) 
@@ -45,11 +46,15 @@ class ChatCollection extends StatelessWidget {
          return ListView.builder(itemCount:snapshot.data.documents.length,itemBuilder: (_,index){
          if(snapshot.data.documents[index].id!=uid)
          { getref(snapshot.data.documents[index]);
-         return  Card(
+        
+         return  Card(elevation: 10,
+         shadowColor: Colors.white10,
                                     child: ListTile(
-                                    contentPadding: const EdgeInsets.only(top:8,left: 5,right:5,bottom: 8),
+                                      key: UniqueKey() ,
+                                    contentPadding: const EdgeInsets.only(top:8,left: 8,right:5,bottom: 8),
                                     leading: snapshot.data.documents[index]['url'].length==0?CircleAvatar(child: Text(snapshot.data.documents[index]["username"].toString().substring(0,1)),radius: 25,):CircleAvatar(child: SizedBox(),backgroundImage:NetworkImage(snapshot.data.documents[index]["url"]),radius: 25,),
-                                    title: Text(snapshot.data.documents[index]["username"],style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15,color: Colors.black,fontFamily: "Roboto"),),
+                                   
+                                    title: Text(snapshot.data.documents[index]["username"],style:  TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black,fontFamily: "Roboto"),),
                                     subtitle: StreamBuilder(
                stream: FirebaseFirestore.instance.collection("user").doc(uid).collection("friends").doc(snapshot.data.documents[index].id).snapshots(),
                builder: (context, snapshoty) {
@@ -65,21 +70,26 @@ class ChatCollection extends StatelessWidget {
                    builder: (context, snapshotyi) {
                      if(snapshotyi.hasData)
                       {
-                           return snapshotyi.data["fileType"]=="text"?Row(
+                           return Row(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              children: [
-                               Text(snapshotyi.data['message']),
+                              snapshotyi.data["fileType"]=="text"? Text(snapshotyi.data['message'].length<28?snapshotyi.data['message']:"${snapshotyi.data['message'].toString().substring(0,19)}....",softWrap: true,overflow: TextOverflow.fade,style: TextStyle( 
+                                fontWeight: FontWeight.w400,fontFamily: "Roboto"
+                              ),):Text("${snapshotyi.data["fileType"]}"),
                              
-                               Text('${messageBubbles[0]["timestamp"].toDate().hour.toString()}:${messageBubbles[0]["timestamp"].toDate().minute}')
+                               Text('${messageBubbles[0]["timestamp"].toDate().hour.toString()}:${messageBubbles[0]["timestamp"].toDate().minute}',style: TextStyle(
+                                 fontFamily: "Roboto",
+                                 fontSize: 15,fontWeight: FontWeight.w500
+                               ),)
                              ],
-                           ):Text("send u the ${snapshotyi.data["fileType"]}");
+                           );
                       }
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                       });
                       }
                       return Text("Start your Conversation now !");
                       }
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                       })
                      
 
@@ -94,7 +104,7 @@ class ChatCollection extends StatelessWidget {
 
                    });}
                     if(!snapshot.hasData)
-         return Center(child: CircularProgressIndicator());
+         return Center(child: CircularProgressIndicator(backgroundColor: Colors.white,));
                    
                    }));
                 

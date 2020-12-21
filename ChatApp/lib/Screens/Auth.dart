@@ -103,6 +103,7 @@ final auth=FirebaseAuth.instance;
        _formkey.currentState.save();
         
          submit(email.trim(),password.trim(),username.trim(),islogin,context,_image);
+         
       
       });
     }
@@ -243,7 +244,7 @@ final auth=FirebaseAuth.instance;
                          child: FlatButton(child: Text(islogin==false?"I already have an account":"Create a new account",style: TextStyle(color: Colors.red),),
                          onPressed: (){
                            setState(() {
-                             
+                            isval=!isval;
                              islogin=!islogin;
                              if(_email!=null)
                              _email.clear();
