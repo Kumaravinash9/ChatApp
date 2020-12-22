@@ -6,12 +6,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
-class ChatCollection extends StatelessWidget {
+
+class ChatCollection extends StatefulWidget {
  final String uid;
   final String username;
   ChatCollection(this.uid,this.username);
+
+  @override
+  _ChatCollectionState createState() => _ChatCollectionState();
+}
+
+class _ChatCollectionState extends State<ChatCollection> {
   Future<void>getref(dynamic snapshot) async{
     DocumentReference docRef= FirebaseFirestore.instance.collection('user').doc(FirebaseAuth.instance.currentUser.uid).collection("friends").doc(snapshot.id);
                                  DocumentSnapshot ref= await docRef.get();
@@ -30,24 +36,22 @@ class ChatCollection extends StatelessWidget {
 
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(.8),
       body:StreamBuilder(stream: FirebaseFirestore.instance.collection("user").snapshots(),builder: (context,AsyncSnapshot<dynamic>snapshot){
-        
-       if(snapshot.hasData) 
+        if(snapshot.connectionState==ConnectionState.waiting)
+        return Center(child:CircularProgressIndicator());
+      else if(snapshot.hasData) 
        {
-          
+          print(snapshot.data.documents.length);
          return ListView.builder(itemCount:snapshot.data.documents.length,itemBuilder: (_,index){
-         if(snapshot.data.documents[index].id!=uid)
+         if(snapshot.data.documents[index].id!=widget.uid)
          { getref(snapshot.data.documents[index]);
         
          return  Card(elevation: 10,
+         key: UniqueKey(),
          shadowColor: Colors.white10,
                                     child: ListTile(
                                       key: UniqueKey() ,
@@ -56,7 +60,7 @@ class ChatCollection extends StatelessWidget {
                                    
                                     title: Text(snapshot.data.documents[index]["username"],style:  TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black,fontFamily: "Roboto"),),
                                     subtitle: StreamBuilder(
-               stream: FirebaseFirestore.instance.collection("user").doc(uid).collection("friends").doc(snapshot.data.documents[index].id).snapshots(),
+               stream: FirebaseFirestore.instance.collection("user").doc(widget.uid).collection("friends").doc(snapshot.data.documents[index].id).snapshots(),
                builder: (context, snapshoty) {
                  if(snapshoty.hasData)
                  {
@@ -100,9 +104,12 @@ class ChatCollection extends StatelessWidget {
             ChatBox(snapshot.data.documents[index].id,snapshot.data.documents[index]["username"],snapshot.data.documents[index]['url'])));},),
            
          );}
-        
+        return SizedBox();
 
-                   });}
+                   }
+                   
+                   
+                   );}
                     if(!snapshot.hasData)
          return Center(child: CircularProgressIndicator(backgroundColor: Colors.white,));
                    

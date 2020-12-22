@@ -75,6 +75,9 @@ final auth=FirebaseAuth.instance;
            Navigator.of(ctx).push(MaterialPageRoute(builder: (bctx)=>UserScreen(authresult.user.uid,username))).then((value) async{
             setState(() {
               isval=!isval;
+              _username.clear();
+       _password.clear();
+       _email.clear();
             });
            });
     }on PlatformException catch(err){
@@ -87,6 +90,9 @@ final auth=FirebaseAuth.instance;
      
      setState(() {
        isval!=isval;
+       _username.clear();
+       _password.clear();
+       _email.clear();
      });
      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(err.toString()),backgroundColor: Colors.red,));
     }
@@ -225,6 +231,7 @@ final auth=FirebaseAuth.instance;
                           child:
                         !isval? RaisedButton(onPressed: (){
                           setState(() {
+                            
                             isval=!isval;
                           });
                         _trysubmit();
@@ -244,7 +251,7 @@ final auth=FirebaseAuth.instance;
                          child: FlatButton(child: Text(islogin==false?"I already have an account":"Create a new account",style: TextStyle(color: Colors.red),),
                          onPressed: (){
                            setState(() {
-                            isval=!isval;
+                             
                              islogin=!islogin;
                              if(_email!=null)
                              _email.clear();

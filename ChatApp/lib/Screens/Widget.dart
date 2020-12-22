@@ -35,7 +35,7 @@ class Bubble extends StatelessWidget {
         Container(
           margin: const EdgeInsets.all(3),
           constraints: BoxConstraints(minWidth:.5, maxWidth: MediaQuery.of(context).size.width*.6),
-          padding:  fileType=="text"?const EdgeInsets.all(6.0):const EdgeInsets.all(0),
+          padding:  fileType=="text"?const EdgeInsets.only(left:6.0,right: 1.0,top: 6,bottom: 6):const EdgeInsets.all(0),
           decoration: BoxDecoration(
             boxShadow: [
               fileType=="text"?BoxShadow(
@@ -59,16 +59,19 @@ class Bubble extends StatelessWidget {
                 :Container( 
                 width:MediaQuery.of(context).size.width*.6,
                 height:MediaQuery.of(context).size.height*.32,
-                child: Stack(fit: StackFit.expand,
+                child: Stack(fit: StackFit.loose,
+                overflow: Overflow.clip,
                 alignment: Alignment.center,
                 children: [
                 Center(
                   child: CircularProgressIndicator(),
                 ),
                 Container(
-                  width:MediaQuery.of(context).size.width*.6,
-                   height:MediaQuery.of(context).size.height*.32,
-                  child: FadeInImage.memoryNetwork(placeholder:kTransparentImage , image: message,fit: BoxFit.cover,))
+                  padding: const EdgeInsets.all(3),
+                 width: double.infinity,
+                 height: double.infinity,
+                  child: ClipRRect(borderRadius: radius,
+                    child: FadeInImage.memoryNetwork(placeholder:kTransparentImage , image: message,fit: BoxFit.fill,)))
 
                 ],
                 ),
@@ -83,6 +86,8 @@ class Bubble extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black38,
                           fontSize: 10.0,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w600
                         )),
                     SizedBox(width: 3.0),
                     
@@ -95,4 +100,23 @@ class Bubble extends StatelessWidget {
       ],
     );
   }
+}
+
+
+alertBox(BuildContext ctx)async{
+AlertDialog(
+content: Center(
+  child: Text("My Bad ,it's not added yet!"),
+),
+actions: [
+Center(child: FlatButton(child: Text('OK'),onPressed: ()async{
+  Navigator.of(ctx).pop();
+},))
+
+],
+
+
+);
+
+
 }

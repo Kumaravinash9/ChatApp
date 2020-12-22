@@ -26,6 +26,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return
        Scaffold(
+         
       appBar: AppBar(title: Text("BIPOLAR",style:TextStyle(
 fontWeight: FontWeight.w500,fontFamily: "Roboto"
       )),
@@ -53,7 +54,23 @@ fontWeight: FontWeight.w500,fontFamily: "Roboto"
       ],
       ),
     
-      body: ChatCollection(widget.uid,widget.username),
+      body: StreamBuilder<Object>(
+        stream:FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else 
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } 
+                else
+          return ChatCollection(widget.uid,widget.username);
+        }
+      ),
              
           
     );                

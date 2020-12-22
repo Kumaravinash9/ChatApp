@@ -13,6 +13,35 @@ import 'package:image_picker/image_picker.dart';
 import 'Widget.dart';
 
 
+showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+     },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("My Bad "),
+    content: Text("It's not done yet !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+
 class ChatBox extends StatefulWidget {
   final String userId;
   final String username;
@@ -104,6 +133,7 @@ TextEditingController chatmessage;
               color: Colors.green,
             ),
             onPressed: () {
+             showAlertDialog(context);
               print(widget.username);
             },
           ),
@@ -112,7 +142,9 @@ TextEditingController chatmessage;
               Icons.call,
               color: Colors.green,
             ),
-            onPressed: () {},
+            onPressed: () {
+             showAlertDialog(context);
+            },
           ),
 
          /* DropdownButtonHideUnderline(
@@ -212,6 +244,7 @@ TextEditingController chatmessage;
             children: [
               IconButton(
                   icon: Icon(Icons.keyboard_voice , color: Colors.blueGrey,), onPressed: () {
+                    showAlertDialog(context);
 
 
 
