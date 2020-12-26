@@ -103,20 +103,3 @@ class Bubble extends StatelessWidget {
 }
 
 
-alertBox(BuildContext ctx)async{
-AlertDialog(
-content: Center(
-  child: Text("My Bad ,it's not added yet!"),
-),
-actions: [
-Center(child: FlatButton(child: Text('OK'),onPressed: ()async{
-  Navigator.of(ctx).pop();
-},))
-
-],
-
-
-);
-
-
-}
