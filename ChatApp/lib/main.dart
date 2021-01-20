@@ -1,5 +1,5 @@
 import 'package:ChatApp/Screens/Auth.dart';
-import 'package:ChatApp/User_admin.dart';
+
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -27,13 +27,13 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             textTheme: TextTheme().apply(fontFamily: "Roboto")),
-        home: Admin());
+        home: MyHomePage());
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  final String kind;
-  MyHomePage({this.kind});
+  
+  MyHomePage();
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -50,6 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     end: Alignment.bottomCenter)),
             width: MediaQuery.of(context).size.width * 1,
             height: double.infinity,
-            child: Center(child: AuthScreen(widget.kind))));
+            child: Center(child: AuthScreen())));
   }
 }

@@ -10,8 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthScreen extends StatefulWidget {
-  final String kind;
-  AuthScreen(this.kind);
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -68,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
           "username": username,
           "email": email,
           "url": dwnurl,
-          "kind": widget.kind
+         
         });
       } else {
         authresult = await auth.signInWithEmailAndPassword(
@@ -78,7 +77,7 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.of(ctx)
             .push(MaterialPageRoute(
                 builder: (bctx) =>
-                    UserScreen(authresult.user.uid, username, widget.kind)))
+                    UserScreen(authresult.user.uid, username)))
             .then((value) async {
           setState(() {
             isval = !isval;

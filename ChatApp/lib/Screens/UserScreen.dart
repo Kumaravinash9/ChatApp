@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class UserScreen extends StatefulWidget {
   final String uid;
   final String username;
-  final String kind;
-  UserScreen(this.uid, this.username, this.kind);
+
+  UserScreen(this.uid, this.username);
 
   @override
   _UserScreenState createState() => _UserScreenState();
@@ -23,7 +23,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.kind} Portal",
+        title: Text(" ChatApp",
             style:
                 TextStyle(fontWeight: FontWeight.w500, fontFamily: "Roboto")),
         automaticallyImplyLeading: false,
@@ -62,7 +62,7 @@ class _UserScreenState extends State<UserScreen> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return ChatCollection(widget.uid, widget.username, widget.kind);
+              return ChatCollection(widget.uid, widget.username);
             }
           }),
     );
