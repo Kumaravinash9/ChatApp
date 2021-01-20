@@ -5,14 +5,22 @@ A new Flutter project.
 ## Getting Started
 
 ## SIGNUP
-![](Screenshot_20210120-165853.jpg)
+<img src="Screenshot_20210120-165853.jpg" width="600" height="1000">
+
 ## SIGNIN
-![](Screenshot_20210120-165858.jpg)
+<img src="Screenshot_20210120-165858.jpg" width="600" height="1000">
 
-![](Screenshot_20210120-165927.jpg)
 
-![](Screenshot_20210120-165806.jpg)
-![](Screenshot_20210120-165817.jpg)
-![](Screenshot_20210120-165826.jpg)
+<img src="Screenshot_20210120-165927.jpg" width="600" height="1000">
+
+
+<img src="Screenshot_20210120-165806.jpg" width="600" height="1000">
+
+
+<img src="Screenshot_20210120-165817.jpg" width="600" height="1000">
+
+
+<img src="Screenshot_20210120-165826.jpg" width="600" height="1000">
+
 
 
